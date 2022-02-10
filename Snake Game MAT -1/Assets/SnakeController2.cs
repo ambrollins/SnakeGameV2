@@ -5,16 +5,16 @@ using UnityEngine;
 public class SnakeController2 : MonoBehaviour
 {
     private Vector2 direction = Vector2.down;
-    public List<Transform> segments;
+    public List<Transform> snakeBody = new List<Transform>();
     public Transform segmentPrefab;
-    public static SnakeController snakecontroller;
+    public static SnakeController2 snakecontroller2;
+    [SerializeField] private int initialBodySize;
+    public GameOverScreen gameOverScreen;
 
-    private void Awake()
+    private void Start()
     {
         Debug.Log("Snake controller awake");
-        segments = new List<Transform>();
-        segments.Add(this.transform);
-        // segments.Remove(this.transform);
+        ResetLevel();
     }
     private void Update()
     {
@@ -38,31 +38,56 @@ public class SnakeController2 : MonoBehaviour
 
     private void FixedUpdate()
     {
-        for (int i = segments.Count - 1; i > 0; i--)
+        for (int i = snakeBody.Count - 1; i > 0; i--)
         {
-            segments[i].position = segments[i - 1].position;
+            snakeBody[i].position = snakeBody[i - 1].position;
         }
-        this.transform.position = new Vector3(
-            Mathf.Round(this.transform.position.x) + direction.x,
-            Mathf.Round(this.transform.position.y) + direction.y,
-            0f);
+        this.transform.position = new Vector3(Mathf.Round(this.transform.position.x) + direction.x, Mathf.Round(this.transform.position.y) + direction.y, 0f);
     }
 
     private void Grow()
     {
         Transform segment = Instantiate(this.segmentPrefab);
-        segment.position = segments[segments.Count - 1].position;
-        segments.Add(segment);
+        segment.position = snakeBody[snakeBody.Count - 1].position;
+        snakeBody.Add(segment);
     }
-    // private void Shrink()
-    // {
-    //      Transform segment = Instantiate(this.segmentPrefab);
-    //     segment.position = segments[segments.Count - 1].position;
-    //     segments.Remove(segment);
-    // }
+    private void Shrink()
+    {
+        int LastBodyIndex = snakeBody.Count - 1;
+       // Destroy();
+        snakeBody.RemoveAt(LastBodyIndex);
+       
+    }
     private void StartGame()
     {
+        for (int i = 1; i < snakeBody.Count; i++)
+        {
+            Destroy(snakeBody[i].gameObject);
+        }
+        snakeBody.Clear();
+        snakeBody.Add(this.transform);
+        for (int i = 1; i < snakeBody.Count; i++)
+        {
+            snakeBody.Add(Instantiate(this.segmentPrefab));
+        }
 
+        this.transform.position = Vector3.zero;
+    }
+
+    public void ResetLevel()
+    {
+
+        for (int i = 1; i < snakeBody.Count; i++)
+        {
+            Destroy(snakeBody[i].gameObject);
+        }
+        snakeBody.Clear();
+        snakeBody.Add(this.transform);
+        for (int i = 1; i < this.initialBodySize; i++)
+        {
+            snakeBody.Add(Instantiate(this.segmentPrefab));
+        }
+        this.transform.position = new Vector3(5, 0f, 0f);
     }
     private void ScreenWrap(Collider2D collision)
     {
@@ -90,18 +115,21 @@ public class SnakeController2 : MonoBehaviour
         {
             Grow();
         }
-        // if (collision.tag == "Poison")
-        //{
-        // Shrink();
-        //}
+        if (collision.tag == "Poison")
+        {
+            Shrink();
+        }
         else if (collision.tag == "wall")
         {
             ScreenWrap(collision);
         }
-        else if (collision.gameObject.GetComponent<SnakeController>())
+        else if (collision.gameObject.GetComponent<SnakeController>() || collision.tag == "Tail")
         {
             FindObjectOfType<Game_Manager>().EndGame();
+            ResetLevel();
+            //StartGame();
         }
+
     }
     /*private void OnCollisionEnter2D(Collision2D gamecollision)
     {
@@ -110,4 +138,10 @@ public class SnakeController2 : MonoBehaviour
             FindObjectOfType<Game_Manager>().EndGame();
         }
     }*/
+    public void GameOver()
+    {
+        gameOverScreen.SetUp(snakeBody.Count);
+    }
+
+
 }
