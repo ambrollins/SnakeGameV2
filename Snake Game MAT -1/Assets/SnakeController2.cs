@@ -10,6 +10,7 @@ public class SnakeController2 : MonoBehaviour
     public static SnakeController2 snakecontroller2;
     [SerializeField] private int initialBodySize;
     public GameOverScreen gameOverScreen;
+    public GameOverScreenIfDraw gameOverScreenIfDraw;
 
     private void Start()
     {
@@ -54,8 +55,12 @@ public class SnakeController2 : MonoBehaviour
     private void Shrink()
     {
         int LastBodyIndex = snakeBody.Count - 1;
-       // Destroy();
+        Destroy(snakeBody[LastBodyIndex].gameObject);
         snakeBody.RemoveAt(LastBodyIndex);
+        if(snakeBody.Count < 1)
+        {
+            GameOver();
+        }
        
     }
     private void StartGame()
@@ -123,12 +128,18 @@ public class SnakeController2 : MonoBehaviour
         {
             ScreenWrap(collision);
         }
-        else if (collision.gameObject.GetComponent<SnakeController>() || collision.tag == "Tail")
+        else if (collision.tag == "Snake")
+        {
+            GameDraw();
+            ResetLevel();
+        }
+        else if ( collision.tag == "Tail")
         {
             FindObjectOfType<Game_Manager>().EndGame();
             ResetLevel();
             //StartGame();
         }
+        
 
     }
     /*private void OnCollisionEnter2D(Collision2D gamecollision)
@@ -141,6 +152,10 @@ public class SnakeController2 : MonoBehaviour
     public void GameOver()
     {
         gameOverScreen.SetUp(snakeBody.Count);
+    }
+    public void GameDraw()
+    {
+        gameOverScreenIfDraw.SetUp(snakeBody.Count);
     }
 
 

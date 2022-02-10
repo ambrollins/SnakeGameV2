@@ -10,6 +10,7 @@ public class SnakeController : MonoBehaviour
     public static SnakeController snakecontroller;
     [SerializeField] private int initialBodySize;
     public GameOverScreen gameOverScreen;
+    public GameOverScreenIfDraw gameOverScreenIfDraw;
 
     private void Start()
     {
@@ -53,8 +54,13 @@ public class SnakeController : MonoBehaviour
     }
     private void Shrink()
     {
-        int lastBody = snakeBody.Count- 1;
-        snakeBody.RemoveAt(lastBody);
+        int LastBodyIndex = snakeBody.Count- 1;
+        Destroy(snakeBody[LastBodyIndex].gameObject);
+        snakeBody.RemoveAt(LastBodyIndex);
+        if (snakeBody.Count < 1)
+        {
+            GameOver();
+        }
     }
     private void StartGame()
     {
@@ -121,11 +127,17 @@ public class SnakeController : MonoBehaviour
         {
             ScreenWrap(collision);
         }
-        else if (collision.gameObject.GetComponent<SnakeController>() || collision.tag == "Tail")
+        else if (collision.tag == "Tail")
         {
-            FindObjectOfType<Game_Manager>().EndGame();
+            //FindObjectOfType<Game_Manager>().EndGame();
+            GameOver();
             ResetLevel();
             //StartGame();
+        }
+        else if (collision.tag == "Snake")
+        {
+            GameDraw();
+            ResetLevel();
         }
         
     }
@@ -139,6 +151,10 @@ public class SnakeController : MonoBehaviour
     public void GameOver()
     {
         gameOverScreen.SetUp(snakeBody.Count);
+    }
+    public void GameDraw()
+    {
+        gameOverScreenIfDraw.SetUp(snakeBody.Count);
     }
    
 

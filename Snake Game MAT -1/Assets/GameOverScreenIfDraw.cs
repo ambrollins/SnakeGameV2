@@ -5,12 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class GameOverScreen : MonoBehaviour
+public class GameOverScreenIfDraw : MonoBehaviour
 {
     public Text scoreText;
     public void SetUp(int score = 10)
     {
-        gameObject.SetActive (true);
+        gameObject.SetActive(true);
         scoreText.text = "score :" + score.ToString();
     }
     public void RestartButton()
