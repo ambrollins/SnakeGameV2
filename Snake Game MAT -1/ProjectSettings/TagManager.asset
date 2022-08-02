@@ -4,12 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Snake
-  - Food
-  - wall
-  - Poison
-  - eyes
-  - Tail
+  - Apple
+  - RedChilli
+  - Boundary
+  - SnakeBody
+  - Shield
+  - Speed
   layers:
   - Default
   - TransparentFX
@@ -17,9 +17,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Snake
+  - Food
+  - Walls
   - 
   - 
   - 
