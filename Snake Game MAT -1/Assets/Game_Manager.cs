@@ -5,8 +5,7 @@ using UnityEngine;
 public class Game_Manager : MonoBehaviour
 {
     public void Pause()
-    {
-        
+    {        
         Debug.Log("Game Paused");
     }
     public void Resume()
