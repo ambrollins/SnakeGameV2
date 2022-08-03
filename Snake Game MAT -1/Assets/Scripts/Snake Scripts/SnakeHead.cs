@@ -53,10 +53,7 @@ public class SnakeHead : MonoBehaviour
     {
       snakeHitSomething("SnakeBody");
       break;
-    }
-     
+    } 
    }
-
-
  }
 }

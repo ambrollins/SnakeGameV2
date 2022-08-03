@@ -6,8 +6,5 @@ using UnityEngine.UI;
 public class UImanager : MonoBehaviour
 {
     // [SerializeField] Slider shieldSlider;
- 
-
-
 
 }
