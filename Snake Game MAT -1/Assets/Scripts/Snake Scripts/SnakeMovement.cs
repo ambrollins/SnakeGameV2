@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SnakeMovement : MonoBehaviour
 {
-  private Vector2 snakeDirection;
+  protected Vector2 snakeDirection;
 
   [HideInInspector] public float speed = 0.08f;
 
@@ -13,8 +13,7 @@ public class SnakeMovement : MonoBehaviour
   private List<Transform> _segments;
  
   [SerializeField] Transform segmentPrefab;
-
-
+  
   public Vector2 SnakeDirection
   {
     get{ return snakeDirection;}
@@ -61,7 +60,7 @@ public class SnakeMovement : MonoBehaviour
         transform.eulerAngles = new Vector3(0,0,0);
       }
     }
-   if(Input.GetKeyDown(KeyCode.DownArrow))
+    if(Input.GetKeyDown(KeyCode.DownArrow))
     {
       if((snakeDirection != Vector2.up ))
       {
@@ -113,7 +112,7 @@ public class SnakeMovement : MonoBehaviour
 
   public void snakeBurnMass()
   {
-    Transform lastSegment = _segments[_segments.Count - 1];
+    var lastSegment = _segments[_segments.Count - 1];
     _segments.Remove(_segments[_segments.Count - 1]);
     Destroy(lastSegment.gameObject);
   }

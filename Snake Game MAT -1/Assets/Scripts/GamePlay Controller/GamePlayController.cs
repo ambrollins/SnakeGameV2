@@ -43,6 +43,7 @@ public class GamePlayController : MonoBehaviour
 
 
   public GameObject gameOverPanel;
+  public GameObject gamePausePanel;
    
   void Awake()
   {
@@ -273,6 +274,16 @@ public class GamePlayController : MonoBehaviour
    {
      Time.timeScale = 1f;
      SceneManager.LoadScene(1);
+   }
+   public void PauseGame()
+   {
+     Time.timeScale = 0f;
+     gamePausePanel.SetActive(true);
+   }
+   public void ResumeGame()
+   {
+     Time.timeScale = 1f;
+     gamePausePanel.SetActive(false);
    }
 
    public void Quit()

@@ -7,23 +7,15 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
-
    public void StartGame()
    {
-     SceneManager.LoadScene(1);
+     SceneManager.LoadScene(2);
    }
-
 
    public void Quit()
    {
        Application.Quit();
    }
-    
-
- 
-
-
-
-
-
+   
+   
 }
